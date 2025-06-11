@@ -1,7 +1,5 @@
 require("dotenv").config();
 
-const uri = process.env.MONGO_URL; 
-const { MongoClient } = require('mongodb');
 const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
@@ -12,21 +10,6 @@ const Blog = require("./models/blog");
 const userRoute = require("./routes/user");
 const blogRoute = require("./routes/blog");
 
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  ssl: true
-});
-
-client.connect()
-  .then(() => {
-    console.log('Connected successfully to MongoDB Atlas');
-    return client.db().admin().ping();
-  })
-  .then(console.log)
-  .catch(console.error)
-  .finally(() => client.close());
-
 const {
   checkForAuthenticationCookie,
 } = require("./middlewares/authentication");
@@ -35,9 +18,7 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 mongoose
-  .connect(process.env.MONGO_URL,{
-    tls:true,
-  })
+  .connect(process.env.MONGO_URL)
   .then((e) => console.log("MongoDB Connected"));
 
 app.set("view engine", "ejs");
