@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const { MongoClient } = require('mongodb');
 const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
@@ -10,6 +11,12 @@ const Blog = require("./models/blog");
 const userRoute = require("./routes/user");
 const blogRoute = require("./routes/blog");
 
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  ssl: true
+});
+
 const {
   checkForAuthenticationCookie,
 } = require("./middlewares/authentication");
@@ -18,7 +25,9 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 mongoose
-  .connect(process.env.MONGO_URL)
+  .connect(process.env.MONGO_URL,{
+    tls:true,
+  })
   .then((e) => console.log("MongoDB Connected"));
 
 app.set("view engine", "ejs");
