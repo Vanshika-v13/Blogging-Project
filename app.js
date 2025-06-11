@@ -17,6 +17,15 @@ const client = new MongoClient(uri, {
   ssl: true
 });
 
+client.connect()
+  .then(() => {
+    console.log('Connected successfully to MongoDB Atlas');
+    return client.db().admin().ping();
+  })
+  .then(console.log)
+  .catch(console.error)
+  .finally(() => client.close());
+  
 const {
   checkForAuthenticationCookie,
 } = require("./middlewares/authentication");
