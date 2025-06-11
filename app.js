@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const uri = process.env.MONGO_URL; 
 const { MongoClient } = require('mongodb');
 const path = require("path");
 const express = require("express");
@@ -25,7 +26,7 @@ client.connect()
   .then(console.log)
   .catch(console.error)
   .finally(() => client.close());
-  
+
 const {
   checkForAuthenticationCookie,
 } = require("./middlewares/authentication");
