@@ -3,9 +3,11 @@ const User = require("../models/user");
 
 const router = Router();
 
+
 router.get("/signin", (req, res) => {
   return res.render("signin");
 });
+
 
 router.get("/signup", (req, res) => {
   return res.render("signup");
@@ -15,12 +17,11 @@ router.post("/signin", async (req, res) => {
   const { email, password } = req.body;
   try {
     const token = await User.matchPasswordAndGenerateToken(email, password);
-
+     req.flash("success", "Signed in successfully!");
     return res.cookie("token", token).redirect("/");
   } catch (error) {
-    return res.render("signin", {
-      error: "Incorrect Email or Password",
-    });
+    req.flash("error", "Incorrect Email or Password");
+    return res.redirect("/user/signin");
   }
 });
 
@@ -30,12 +31,25 @@ router.get("/logout", (req, res) => {
 
 router.post("/signup", async (req, res) => {
   const { fullName, email, password } = req.body;
-  await User.create({
-    fullName,
-    email,
-    password,
-  });
-  return res.redirect("/");
+
+  try {
+    await User.create({ fullName, email, password });
+
+
+    req.flash("success", "Signup successful. You can now sign in.");
+
+    return res.redirect("/user/signin");
+  } catch (error) {
+    if (error.code === 11000) {
+      req.flash("error", "Email already exists. Please use a different one.");
+    } else {
+      req.flash("error", "Something went wrong. Please try again.");
+    }
+
+    
+    return res.redirect("/user/signup");
+  }
 });
+
 
 module.exports = router;

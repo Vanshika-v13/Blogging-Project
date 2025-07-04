@@ -3,3 +3,15 @@
   integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
   crossorigin="anonymous"
 ></script>
+
+<script>
+ 
+  setTimeout(() => {
+    const alerts = document.querySelectorAll('.alert-dismissible');
+    alerts.forEach(alert => {
+    
+      const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+      bsAlert.close();
+    });
+  }, 4000);
+</script>

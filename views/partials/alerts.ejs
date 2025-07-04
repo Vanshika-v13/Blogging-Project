@@ -1,0 +1,18 @@
+
+<% if (Array.isArray(error) && error.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show mx-3 mt-3" role="alert">
+    <% error.forEach(function (err) { %>
+      <p class="mb-0"><%= err %></p>
+    <% }) %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<% if (Array.isArray(success) && success.length > 0) { %>
+  <div class="alert alert-success alert-dismissible fade show mx-3 mt-3" role="alert">
+    <% success.forEach(function (msg) { %>
+      <p class="mb-0"><%= msg %></p>
+    <% }) %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
